@@ -1,1 +1,4 @@
 .DS_Store
+public_html/api/app/log/error.log
+public_html/api/app/log/process.log
+
