@@ -1,14 +1,16 @@
 <?php
 
-    require_once 'helpers/get_values.php';
+require_once 'helpers/get_values.php';
 
-    // Helpers
-    require_once 'helpers/server_methods.php';
-    require_once 'helpers/validations.php';
+// Helpers
+require_once 'helpers/server_methods.php';
+require_once 'helpers/validations.php';
 
-    require_once 'config/config.php';
+require_once 'config/config.php';
 
-    // Autoload Core Libraries
-    spl_autoload_register(function($className) {
-        require_once 'libraries/'. $className .'.php';
-    });
+// Autoload Core Libraries
+require_once 'libraries/Core.php';
+require_once 'libraries/JWT.php';
+require_once 'libraries/Database.php';
+require_once 'libraries/FileUpload.php';
+require_once 'libraries/Controller.php';

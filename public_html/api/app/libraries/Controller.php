@@ -23,7 +23,7 @@ class Controller
     private function get_updated_token()
     {
         if (!is_null($this->current_token)) {
-            $this->current_token->dt_expire = strtotime("+" . TOKEN_DURATION . " seconds", curent_time());
+            $this->current_token->dt_expire = strtotime("+" . TOKEN_DURATION . " seconds", getCurrentTime());
         }
         return JWT::encode($this->current_token, KEY_TOKEN);
     }
@@ -34,7 +34,7 @@ class Controller
             'id' => $user->id,
             'name' => $user->nombre,
             'admin' => $user->admin,
-            'dt_expire' => strtotime("+" . TOKEN_DURATION . " seconds", curent_time())
+            'dt_expire' => strtotime("+" . TOKEN_DURATION . " seconds", getCurrentTime())
         ];
         $token = JWT::encode($token_arr, KEY_TOKEN);
         return $token;
@@ -61,7 +61,7 @@ class Controller
         if (!$this->userModel->is_user_enabled($token->id)) {
             $this->response(['error' => "NotValidUser"], ERROR_FORBIDDEN, false);
         }
-        if ($token->dt_expire < curent_time()) {
+        if ($token->dt_expire < getCurrentTime()) {
             $this->response(['error' => "InvalidSession"], ERROR_FORBIDDEN, false);
         }
         $this->current_token = $token;

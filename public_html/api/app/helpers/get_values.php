@@ -9,12 +9,18 @@ function get_model($model)
     return new $modelName();
 }
 
-function curent_time()
+/**
+ * Retorna la fecha actual en formato de tiempo
+ */
+function getCurrentTime()
 {
     return strtotime(date('Y-m-d H:i:s'));
 }
 
-function array_to_obj($array)
+/**
+ * Convierte una arreglo asociativo a objeto
+ */
+function arrayToObject($array)
 {
     return json_decode(json_encode($array), false);
 }
@@ -29,10 +35,13 @@ function get_config_values()
     if (is_null($values)) {
         serverErrorHeader(true);
     }
-    return array_to_obj($values);
+    return arrayToObject($values);
 }
 
-function get_hash_password($password)
+/**
+ * Retorna una clave encryptada
+ */
+function getHashPassword($password)
 {
     $options = [
         'cost' => 11
@@ -41,7 +50,10 @@ function get_hash_password($password)
     return password_hash($password, PASSWORD_BCRYPT, $options);
 }
 
-function get_if_isset($var, $key, $default = "")
+/**
+ * Retorna un valor en caso de que exista o un valor por defecto
+ */
+function getIfIsset($var, $key, $default = "")
 {
     if (is_null($var)) {
         return $default;
@@ -60,45 +72,10 @@ function get_if_isset($var, $key, $default = "")
     }
 }
 
-function json_set_null_params_if_not_exists($json, $params = [])
-{
-    if (
-        count($params) > 0 &&
-        is_object($json)
-    ) {
-        foreach ($params as &$param) {
-            if (!isset($json->$param)) {
-                $json->$param = null;
-            }
-        }
-    }
-    return $json;
-}
-
-function convert_to_bool_values($json, $params = [])
-{
-    if (count($params) > 0) {
-
-        if (is_array($json)) {
-            foreach ($json as &$item) {
-                foreach ($params as $param) {
-                    if (isset($item->$param)) {
-                        $item->$param = $item->$param == true;
-                    }
-                }
-            }
-        } elseif (is_object($json)) {
-            foreach ($params as $param) {
-                if (isset($json->$param)) {
-                    $json->$param = $json->$param == true;
-                }
-            }
-        }
-    }
-    return $json;
-}
-
-function get_random_str($length = 15)
+/**
+ * Genera un string de forma aleatoria
+ */
+function getRandomString($length = 15)
 {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $charactersLength = strlen($characters);
@@ -109,7 +86,11 @@ function get_random_str($length = 15)
     return $randomString;
 }
 
-function get_server_file_url($simple_url)
+/**
+ * Concatena una url + el sitio actual
+ * site.com + "url enviada"
+ */
+function getSiteURL($simple_url)
 {
-    return URLROOT . $simple_url;
+    return URL_ROOT . $simple_url;
 }

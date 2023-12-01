@@ -90,7 +90,7 @@ function getJsonData($json_identifier = null)
     }
 
     if (!is_null($data)) {
-        $data = array_to_obj($data);
+        $data = arrayToObject($data);
         foreach ($data as &$value) {
             if (is_string($value)) {
                 $value = filter_var(trim($value), FILTER_SANITIZE_STRING);
@@ -100,20 +100,28 @@ function getJsonData($json_identifier = null)
     return ($data && is_object($data)) ? $data : null;
 }
 
-function errorLog($error)
+function errorLog($strError = "")
 {
-    $file_url = APP_ROOT . '/log/error.log';
+    $filePath = APP_ROOT . '/log/error.log';
     $data_help = "User: " . $_SERVER['REMOTE_ADDR'] . ' - ' . date("F j, Y, g:i a") . ": ";
-    $file_content = "\n" . $data_help . $error;
-    file_put_contents($file_url, $file_content, FILE_APPEND | LOCK_EX);
+    $fileContent = "\n" . $data_help . $strError;
+    writeInFile($filePath, $fileContent);
 }
 
-function processLog($str)
+function processLog($strLog = "")
 {
-    $file_url = APP_ROOT . '/log/process.log';
+    $filePath = APP_ROOT . '/log/process.log';
     $data_help = "User: " . $_SERVER['REMOTE_ADDR'] . ' - ' . date("F j, Y, g:i a") . ": ";
-    $file_content = "\n" . $data_help . $str;
-    file_put_contents($file_url, $file_content, FILE_APPEND | LOCK_EX);
+    $fileContent = "\n" . $data_help . $strLog;
+    writeInFile($filePath, $fileContent);
+}
+
+/**
+ * Concatena el contenido enviado hacia un archivo
+ */
+function writeInFile($filePath, $fileContent = "")
+{
+    file_put_contents($filePath, $fileContent, FILE_APPEND | LOCK_EX);
 }
 
 function sendResponse($data = null, $error = null)
@@ -142,28 +150,4 @@ function sendResponse($data = null, $error = null)
         echo json_encode($data);
     }
     die();
-}
-
-
-if (!function_exists('apache_request_headers')) {
-    function apache_request_headers()
-    {
-        $arh = array();
-        $rx_http = '/\AHTTP_/';
-        foreach ($_SERVER as $key => $val) {
-            if (preg_match($rx_http, $key)) {
-                $arh_key = preg_replace($rx_http, '', $key);
-                $rx_matches = array();
-                // do some nasty string manipulations to restore the original letter case
-                // this should work in most cases
-                $rx_matches = explode('_', $arh_key);
-                if (count($rx_matches) > 0 and strlen($arh_key) > 2) {
-                    foreach ($rx_matches as $ak_key => $ak_val) $rx_matches[$ak_key] = ucfirst($ak_val);
-                    $arh_key = implode('-', $rx_matches);
-                }
-                $arh[$arh_key] = $val;
-            }
-        }
-        return ($arh);
-    }
 }

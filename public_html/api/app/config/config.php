@@ -17,7 +17,7 @@ define('ERROR_FORBIDDEN', 403);
 define('ERROR_PROCESS', 409);
 define('ERROR_SERVER', 500);
 
-define('URLROOT', 'http://yoursite.com/');
+define('URL_ROOT', 'http://yoursite.com/');
 define('SITENAME', 'YOURSITE');
 
 // Private Controller Types

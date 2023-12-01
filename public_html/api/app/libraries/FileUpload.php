@@ -133,7 +133,7 @@ class FileUpload
                 array_push($files_saved, $new_file);
             }
         }
-        return array_to_obj($files_saved);
+        return arrayToObject($files_saved);
     }
 
     public function get_complete_files_path()
@@ -149,9 +149,9 @@ class FileUpload
             $extension = "png";
         }
 
-        $filename = get_random_str(20) . "." . $extension;
+        $filename = getRandomString(20) . "." . $extension;
         while (file_exists($this->default_folder_path . $this->final_folder_path . $filename)) {
-            $filename = get_random_str(20) . "." . $extension;
+            $filename = getRandomString(20) . "." . $extension;
         }
 
         return $filename;
